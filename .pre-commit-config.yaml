@@ -1,0 +1,93 @@
+# `pre-commit install` sets up both hook types below; no need for --hook-type.
+default_install_hook_types: [pre-commit, commit-msg]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  # Secret scanning, only here: a secret caught after the push would have to be
+  # rotated. Catching it before the commit means it never leaves the machine.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # python formatting and linting (security checks: ruff's `S` rules)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.3
+    hooks:
+      # Run the linter.
+      - id: ruff-check
+        types_or: [ python, pyi ]
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+        types_or: [ python, pyi, markdown ]
+
+  # python code security, same scope and threshold as the CI security scan
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: [ -c, pyproject.toml, --severity-level, medium ]
+        files: ^(src|tests)/
+        additional_dependencies: [ "bandit[toml]" ]
+
+  # python type checking: runs in this project's own uv environment, so mypy
+  # sees the same dependencies and version as `uv run mypy` and CI. Targets
+  # come from `files` in pyproject.toml [tool.mypy].
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types_or: [ python, pyi ]
+        pass_filenames: false
+        require_serial: true
+
+  # javascript/typescript linting and formatting -- run against the project's
+  # own devDependencies (`npm install` first) rather than a pre-commit-managed
+  # node env: mirrors-prettier is archived, and eslint needs the project's
+  # plugins and config. Delete these hooks if the project has no JS code.
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: npx --no -- eslint --fix
+        language: system
+        files: \.(js|jsx|mjs|cjs|ts|tsx)$
+      - id: prettier
+        name: prettier
+        entry: npx --no -- prettier --write --ignore-unknown
+        language: system
+        files: \.(js|jsx|mjs|cjs|ts|tsx|css)$
+
+  # jupyter notebook cleaning
+  - repo: https://github.com/srstevenson/nb-clean
+    rev: v5.0.0
+    hooks:
+      - id: nb-clean
+
+  # keep uv.lock up to date
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.13.6
+    hooks:
+      - id: uv-lock
+
+  # commit messages must follow Conventional Commits (see README.md)
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [ commit-msg ]

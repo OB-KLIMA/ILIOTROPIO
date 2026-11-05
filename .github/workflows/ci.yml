@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, prod]
+  pull_request:
+    branches: [dev, prod]
+
+permissions:
+  contents: read
+
+# Cancel a running CI when a new commit is pushed to the same branch/PR.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint, format & type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      # --locked also fails if uv.lock is out of date with pyproject.toml.
+      - run: uv sync --locked
+      - name: Ruff lint
+        run: uv run ruff check --output-format=github
+      - name: Ruff format
+        run: uv run ruff format --check --diff
+      - name: Mypy
+        run: uv run mypy
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run pytest
+
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      # All groups, so that pip-audit also covers the dev, test and docs tools.
+      - run: uv sync --locked --all-groups
+      - name: Bandit (code security)
+        run: uv run --with bandit bandit -r src/ tests/ -c pyproject.toml --severity-level medium
+      - name: pip-audit (dependency vulnerabilities)
+        run: uv run --with pip-audit pip-audit

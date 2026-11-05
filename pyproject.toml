@@ -1,0 +1,151 @@
+[project]
+name = "template-repo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Best Employee", email = "best.employee@klima.aero" }
+]
+requires-python = ">=3.15"
+dependencies = [
+    "python-dotenv>=1.2.4",
+]
+
+[project.optional-dependencies]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pre-commit>=4.6.2",
+    "ruff>=0.16.10",
+]
+docs = [
+    "mkdocs>=1.6.1,<2",
+    "mkdocs-material>=9.7.7",
+    "mkdocstrings[python]>=1.0.8",
+]
+test = [
+    "hypothesis>=6.170.14",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-timeout>=2.4.0",
+]
+
+# `uv sync` installs both groups by default (dev setup); production uses
+# `uv sync --no-default-groups` (see `make init-prod`).
+[tool.uv]
+default-groups = ["dev", "test"]
+
+[project.scripts]
+template-repo = "template_repo.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.14.0"]
+build-backend = "uv_build"
+
+# --- Pytest ---
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers -ra"
+timeout = 60
+filterwarnings = [
+    "default",
+]
+
+# --- Coverage ---
+[tool.coverage.run]
+source = ["template_repo"]
+
+# --- Mypy ---
+# mypy static type checking
+# https://mypy.readthedocs.io/en/stable/config_file.html
+[tool.mypy]
+files = ["src", "tests"]
+mypy_path = "src"
+explicit_package_bases = true
+namespace_packages = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = false
+show_error_codes = true
+
+# --- Ruff ---
+[tool.ruff]
+line-length = 99
+target-version = "py315"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "ICN",  # import conventions (np, pd, xr...)
+    "TID",  # tidy imports
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "PL",   # pylint
+    "B",    # flake8-bugbear
+    "S",    # flake8-bandit (security)
+    "A",    # flake8-builtins
+    "D",    # flake8-docstring
+    "C4",   # flake8-comprehensions
+    "PT",   # flake8-pytest-style
+    "RET",  # flake8-return
+    "LOG",  # flake8-logging
+    "G",    # flake8-logging-format: lazy %-formatting in log calls
+    "SIM",  # flake8-simplify
+    "TC",   # flake8-type-checking
+    "COM",  # flake8-commas
+    "FBT",  # no positional booleans
+    "NPY",  # numpy-specific rules
+    "RUF",  # ruff-specific rules
+    "ANN",  # annotation rules
+    "BLE",  # blind except
+    "ASYNC", # blocking calls in async functions
+    "TRY",  # exception handling (tryceratops)
+    "PD",   # pandas-vet
+    "PTH",  # pathlib instead of os.path
+]
+ignore = [
+    "B905",    # zip strict (not needed for numpy workflows)
+    "N802",    # no mixed case in function names
+    "N803",    # no mixed case in arguments names
+    "N806",    # no mixed case in variable names
+    "D105",    # document magic methods
+    "PLR2004", # magic values comparison
+    "PLR0912", # maximum six branches
+    "PLR0913", # maximum five arguments per function
+    "PLR0915", # maximum 50 statements per function
+    "PLR0917", # too many positional arguments
+    "ANN401",  # typing `Any` usage
+    "COM812",  # redundant rule that is not recommended to use
+    "TRY003",  # long messages outside the exception class: error messages carry context
+]
+
+# https://docs.astral.sh/ruff/settings/#pydocstyle
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.isort]
+known-first-party = ["template_repo"]
+force-single-line = false
+lines-after-imports = 2
+
+# Default aliases already include `numpy as np` and `pandas as pd`.
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+xarray = "xr"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "ANN",
+    "D",
+    "S101",    # allow assertion
+    "E402",    # imports always on top
+    "PLC0415", # imports always on top
+    "TC",      # keep e.g. `import pytest` at runtime, even if only used in annotations
+]
