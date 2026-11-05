@@ -74,7 +74,7 @@ repos:
 
   # jupyter notebook cleaning
   - repo: https://github.com/srstevenson/nb-clean
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: nb-clean
 
@@ -87,7 +87,7 @@ repos:
 
   # commit messages must follow Conventional Commits (see README.md)
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages: [ commit-msg ]
