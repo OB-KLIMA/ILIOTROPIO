@@ -10,7 +10,7 @@ lazy from collections.abc import Callable
 import matplotlib.pyplot as plt
 import xarray as xr
 
-from template_repo.annual_mean import (
+from iliotropio.annual_mean import (
     EXPERIMENT_COLORS,
     LATITUDE_DIMENSION,
     LONGITUDE_DIMENSION,

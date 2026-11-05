@@ -445,6 +445,65 @@ wheels = [
 ]
 
 [[package]]
+name = "iliotropio"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "dask" },
+    { name = "matplotlib" },
+    { name = "netcdf4" },
+    { name = "pandas" },
+    { name = "python-dotenv" },
+    { name = "xarray" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "mypy" },
+    { name = "pre-commit" },
+    { name = "ruff" },
+]
+docs = [
+    { name = "mkdocs" },
+    { name = "mkdocs-material" },
+    { name = "mkdocstrings", extra = ["python"] },
+]
+test = [
+    { name = "hypothesis" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-timeout" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "dask", specifier = ">=2026.8.0" },
+    { name = "matplotlib", specifier = ">=3.11.2" },
+    { name = "netcdf4", specifier = ">=1.7.5.1.post1" },
+    { name = "pandas", specifier = ">=3.1.0" },
+    { name = "python-dotenv", specifier = ">=1.2.4" },
+    { name = "xarray", specifier = ">=2026.9.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=2.4.0" },
+    { name = "pre-commit", specifier = ">=4.6.2" },
+    { name = "ruff", specifier = ">=0.16.10" },
+]
+docs = [
+    { name = "mkdocs", specifier = ">=1.6.1,<2" },
+    { name = "mkdocs-material", specifier = ">=9.7.7" },
+    { name = "mkdocstrings", extras = ["python"], specifier = ">=1.0.8" },
+]
+test = [
+    { name = "hypothesis", specifier = ">=6.170.14" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "pytest-cov", specifier = ">=7.1.0" },
+    { name = "pytest-timeout", specifier = ">=2.4.0" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1183,65 +1242,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88", size = 30594, upload-time = "2021-05-16T22:03:42.897Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0", size = 29575, upload-time = "2021-05-16T22:03:41.177Z" },
-]
-
-[[package]]
-name = "template-repo"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "dask" },
-    { name = "matplotlib" },
-    { name = "netcdf4" },
-    { name = "pandas" },
-    { name = "python-dotenv" },
-    { name = "xarray" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "mypy" },
-    { name = "pre-commit" },
-    { name = "ruff" },
-]
-docs = [
-    { name = "mkdocs" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
-]
-test = [
-    { name = "hypothesis" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-timeout" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "dask", specifier = ">=2026.8.0" },
-    { name = "matplotlib", specifier = ">=3.11.2" },
-    { name = "netcdf4", specifier = ">=1.7.5.1.post1" },
-    { name = "pandas", specifier = ">=3.1.0" },
-    { name = "python-dotenv", specifier = ">=1.2.4" },
-    { name = "xarray", specifier = ">=2026.9.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=2.4.0" },
-    { name = "pre-commit", specifier = ">=4.6.2" },
-    { name = "ruff", specifier = ">=0.16.10" },
-]
-docs = [
-    { name = "mkdocs", specifier = ">=1.6.1,<2" },
-    { name = "mkdocs-material", specifier = ">=9.7.7" },
-    { name = "mkdocstrings", extras = ["python"], specifier = ">=1.0.8" },
-]
-test = [
-    { name = "hypothesis", specifier = ">=6.170.14" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "pytest-cov", specifier = ">=7.1.0" },
-    { name = "pytest-timeout", specifier = ">=2.4.0" },
 ]
 
 [[package]]

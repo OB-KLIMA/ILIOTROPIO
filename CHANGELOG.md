@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Rename the project and its package to `iliotropio`.
+
 ### Added
 
 - Add an `annual-mean` command to compute annual area-weighted series remotely

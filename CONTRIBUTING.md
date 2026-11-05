@@ -9,15 +9,15 @@ Requirements: [uv](https://docs.astral.sh/uv/), Git and `make`. uv installs
 the right Python version (see `.python-version`) by itself.
 
 ```bash
-git clone git@github.com:klima-aero/template-repo.git
-cd template-repo
+git clone git@github.com:OB-KLIMA/ILIOTROPIO.git
+cd ILIOTROPIO
 make init-dev                 # dependencies, git hooks, .env from .env.example
 ```
 
 Then fill in the values in `.env`, and check that everything works:
 
 ```bash
-uv run template-repo          # runs the command-line entry point
+uv run iliotropio          # runs the command-line entry point
 make check                    # pre-commit hooks, tests, security scan, like CI
 ```
 
@@ -79,7 +79,7 @@ Claude Code. The pre-commit hooks enforce most of them.
 
 ## Tests
 
-- Mirror the layout of `src/template_repo/` in `tests/`.
+- Mirror the layout of `src/iliotropio/` in `tests/`.
 - A bug fix comes with a test that fails without the fix.
 - Run a single test with `uv run pytest tests/unit/test_x.py::test_name`.
 
