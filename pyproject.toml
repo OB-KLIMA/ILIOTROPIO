@@ -1,5 +1,5 @@
 [project]
-name = "template-repo"
+name = "iliotropio"
 version = "0.1.0"
 description = "Compute annual area-weighted temperature and precipitation series from remote climate model output."
 readme = "README.md"
@@ -42,9 +42,9 @@ test = [
 default-groups = ["dev", "test"]
 
 [project.scripts]
-template-repo = "template_repo.cli:main"
-annual-mean = "template_repo.annual_mean:main"
-zonal-mean-sunfract = "template_repo.zonal_mean_sunfract:main"
+iliotropio = "iliotropio.cli:main"
+annual-mean = "iliotropio.annual_mean:main"
+zonal-mean-sunfract = "iliotropio.zonal_mean_sunfract:main"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.14.0"]
@@ -61,7 +61,7 @@ filterwarnings = [
 
 # --- Coverage ---
 [tool.coverage.run]
-source = ["template_repo"]
+source = ["iliotropio"]
 
 # --- Mypy ---
 # mypy static type checking
@@ -141,7 +141,7 @@ allowed-confusables = ["−", "α"]
 convention = "numpy"
 
 [tool.ruff.lint.isort]
-known-first-party = ["template_repo"]
+known-first-party = ["iliotropio"]
 force-single-line = false
 lines-after-imports = 2
 

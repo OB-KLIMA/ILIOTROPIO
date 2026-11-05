@@ -1,6 +1,6 @@
-# Template Repo
+# ILIOTROPIO
 
-[![CI](https://github.com/klima-aero/template-repo/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/klima-aero/template-repo/actions/workflows/ci.yml)
+[![CI](https://github.com/OB-KLIMA/ILIOTROPIO/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/OB-KLIMA/ILIOTROPIO/actions/workflows/ci.yml)
 [![Python 3.15](https://img.shields.io/badge/python-3.15-3776AB?logo=python&logoColor=white)](pyproject.toml)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 

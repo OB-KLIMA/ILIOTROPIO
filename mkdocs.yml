@@ -1,5 +1,5 @@
-site_name: template-repo
-repo_url: https://github.com/klima-aero/template-repo
+site_name: iliotropio
+repo_url: https://github.com/OB-KLIMA/ILIOTROPIO
 
 theme:
   name: material

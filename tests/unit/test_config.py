@@ -1,6 +1,6 @@
 import pytest
 
-from template_repo.config import load_settings
+from iliotropio.config import load_settings
 
 
 def test_load_settings_reads_environment(monkeypatch: pytest.MonkeyPatch) -> None:
