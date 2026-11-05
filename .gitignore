@@ -1,5 +1,7 @@
 # Project-specific files
 
+# Data
+data/
 
 # Logs
 logs/

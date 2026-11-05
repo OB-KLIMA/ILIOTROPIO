@@ -1,14 +1,19 @@
 [project]
 name = "template-repo"
 version = "0.1.0"
-description = "Add your description here"
+description = "Compute annual area-weighted temperature and precipitation series from remote climate model output."
 readme = "README.md"
 authors = [
     { name = "Best Employee", email = "best.employee@klima.aero" }
 ]
 requires-python = ">=3.15"
 dependencies = [
+    "dask>=2026.8.0",
+    "matplotlib>=3.11.2",
+    "netcdf4>=1.7.5.1.post1",
+    "pandas>=3.1.0",
     "python-dotenv>=1.2.4",
+    "xarray>=2026.9.0",
 ]
 
 [project.optional-dependencies]
@@ -38,6 +43,8 @@ default-groups = ["dev", "test"]
 
 [project.scripts]
 template-repo = "template_repo.cli:main"
+annual-mean = "template_repo.annual_mean:main"
+zonal-mean-sunfract = "template_repo.zonal_mean_sunfract:main"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.14.0"]
@@ -126,6 +133,8 @@ ignore = [
     "COM812",  # redundant rule that is not recommended to use
     "TRY003",  # long messages outside the exception class: error messages carry context
 ]
+# Plot labels use the minus sign and Greek letters.
+allowed-confusables = ["−", "α"]
 
 # https://docs.astral.sh/ruff/settings/#pydocstyle
 [tool.ruff.lint.pydocstyle]
