@@ -27,3 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (doubled) and insolation-weighted annual mean profiles on one plot, and the
   forcing (1 - sunfract)·SWdnTOA·(1 - 0.3) by latitude (against a uniform
   0.0055 reduction in insolation) and by latitude and month; the zonal means are cached locally.
+- Add a `zonal-mean-reduction` command to plot the annual and zonal mean
+  solar irradiance reduction of experiments `8A` and `8B` in 2026, straight
+  (daytime only) and insolation-weighted, and their forcing by latitude.

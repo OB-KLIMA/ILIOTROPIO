@@ -17,6 +17,9 @@ shade incoming sunlight (`1 - sunfract` is the fraction removed), against `2XCO2
   in file names). The half-hourly `histhf` file (`sunfract`, `SWdnTOA`) covers Ilio-1 in
   2026 only.
 - Dimensions are `time_counter`, `lat`, `lon` on a 143 × 144 grid.
+- `ipsl_thredds/oboucher/ILIOTROPIO/` holds `solar_irradiance_reduction` for 8A and 8B,
+  2026–2029, in percent, NaN at night, as (`longitude`, `latitude`, `time`): read it by
+  blocks of longitudes over the whole period, since time slices take minutes per day.
 
 ## Running
 

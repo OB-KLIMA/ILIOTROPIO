@@ -45,6 +45,7 @@ default-groups = ["dev", "test"]
 iliotropio = "iliotropio.cli:main"
 annual-mean = "iliotropio.annual_mean:main"
 zonal-mean-sunfract = "iliotropio.zonal_mean_sunfract:main"
+zonal-mean-reduction = "iliotropio.zonal_mean_reduction:main"
 
 [build-system]
 requires = ["uv_build>=0.12.23,<0.14.0"]

@@ -62,4 +62,26 @@ and the 0°E slice in `.cache/Ilio-1_histhf_shading_lon0_2026-07-01_2026-07-31.n
 (about 1 MB); later runs read the cache instead of THREDDS. Delete a file to
 read its remote data again.
 
+## Solar irradiance reduction of 8A and 8B
+
+Run `uv run zonal-mean-reduction` to plot, for experiments `8A` and `8B` in
+2026, the annual and zonal mean of `solar_irradiance_reduction` from the
+[ILIOTROPIO catalog](https://thredds-su.ipsl.fr/thredds/catalog/ipsl_thredds/oboucher/ILIOTROPIO/catalog.html).
+The files store the reduction itself, in percent and NaN at night; the plots
+show it as a fraction. The files hold no insolation, so `SWdnTOA` comes from
+the Ilio-1 half-hourly file, on the same grid and time steps. It writes two
+plots:
+
+- `data/zonal_mean_profiles_8A_8B.png`: for each experiment, the "straight"
+  mean over daytime steps and longitudes, night excluded, and the "insolation
+  weighted" mean Σ reduction·SWdnTOA / ΣSWdnTOA, the fraction of incoming
+  sunlight removed;
+- `data/forcing_profile_8A_8B.png`: the annual mean forcing
+  reduction·SWdnTOA·(1 - α), α = 0.3, in W m⁻², by latitude.
+
+Use `--output-directory DIR` to write them elsewhere. The first run takes
+about 11 minutes and caches the zonal means (70 MB each) in
+`.cache/ILIOTROPIO_8A_2026_zonal_means.nc` and `..._8B_...`; later runs read
+the cache.
+
 The [API reference](api.md) is generated from the package docstrings.
