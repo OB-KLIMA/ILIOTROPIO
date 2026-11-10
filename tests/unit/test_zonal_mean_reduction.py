@@ -6,6 +6,7 @@ import xarray as xr
 from iliotropio.zonal_mean_reduction import (
     annual_mean_reduction_profiles,
     blockwise_zonal_reduction_means,
+    global_means,
     on_grid_of,
     to_fraction,
     zonal_reduction_means,
@@ -105,3 +106,16 @@ def test_blockwise_zonal_means_weight_uneven_blocks_by_their_longitudes() -> Non
 
     assert float(zonal["shading"].squeeze()) == pytest.approx(0.06)
     assert float(zonal["daylight"].squeeze()) == pytest.approx(1.0)
+
+
+def test_global_means_weight_profiles_by_cosine_latitude() -> None:
+    # cos(0°) = 1 and cos(60°) = 0.5: (1·1 + 0.5·3) / 1.5 = 5/3, not the plain mean 2.
+    profiles = xr.Dataset(
+        {"straight": ("lat", [1.0, 3.0]), "forcing": ("lat", [2.0, 6.0])},
+        coords={"lat": [0.0, 60.0]},
+    )
+
+    means = global_means(profiles)
+
+    assert float(means["straight"]) == pytest.approx(5 / 3)
+    assert float(means["forcing"]) == pytest.approx(10 / 3)

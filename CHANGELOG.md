@@ -29,4 +29,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   0.0055 reduction in insolation) and by latitude and month; the zonal means are cached locally.
 - Add a `zonal-mean-reduction` command to plot the annual and zonal mean
   solar irradiance reduction of experiments `8A` and `8B` in 2026, straight
-  (daytime only) and insolation-weighted, and their forcing by latitude.
+  (daytime only) and insolation-weighted, and their forcing by latitude, with
+  their cos(latitude)-weighted global means in a CSV.

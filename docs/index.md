@@ -70,14 +70,16 @@ Run `uv run zonal-mean-reduction` to plot, for experiments `8A` and `8B` in
 The files store the reduction itself, in percent and NaN at night; the plots
 show it as a fraction. The files hold no insolation, so `SWdnTOA` comes from
 the Ilio-1 half-hourly file, on the same grid and time steps. It writes two
-plots:
+plots and a table:
 
 - `data/zonal_mean_profiles_8A_8B.png`: for each experiment, the "straight"
   mean over daytime steps and longitudes, night excluded, and the "insolation
   weighted" mean Σ reduction·SWdnTOA / ΣSWdnTOA, the fraction of incoming
   sunlight removed;
 - `data/forcing_profile_8A_8B.png`: the annual mean forcing
-  reduction·SWdnTOA·(1 - α), α = 0.3, in W m⁻², by latitude.
+  reduction·SWdnTOA·(1 - α), α = 0.3, in W m⁻², by latitude;
+- `data/global_means_8A_8B.csv`: the global mean of each of these profiles,
+  weighted by cos(latitude), also written to the log.
 
 Use `--output-directory DIR` to write them elsewhere. The first run takes
 about 11 minutes and caches the zonal means (70 MB each) in

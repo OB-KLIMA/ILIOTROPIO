@@ -54,6 +54,13 @@ LATITUDE_TOLERANCE = 1e-4
 DEFAULT_OUTPUT_DIRECTORY = Path("data")
 PROFILES_FILENAME = "zonal_mean_profiles_8A_8B.png"
 FORCING_PROFILE_FILENAME = "forcing_profile_8A_8B.png"
+GLOBAL_MEANS_FILENAME = "global_means_8A_8B.csv"
+# CSV column of each global mean profile, with its units.
+GLOBAL_MEAN_COLUMNS = {
+    "straight": "straight_fraction",
+    "insolation_weighted": "insolation_weighted_fraction",
+    "forcing": "forcing_W_m2",
+}
 FORCING_LABEL = "reduction·SWdnTOA·(1 − α) (W m⁻²)"
 
 
@@ -208,6 +215,24 @@ def annual_mean_reduction_profiles(zonal: xr.Dataset) -> xr.Dataset:
     )
 
 
+def global_means(profiles: xr.Dataset) -> xr.Dataset:
+    """Average profiles over latitude, weighted by the cosine of latitude.
+
+    Parameters
+    ----------
+    profiles : xarray.Dataset
+        Zonal mean profiles by latitude, in degrees.
+
+    Returns
+    -------
+    xarray.Dataset
+        Global mean of each profile.
+    """
+    latitude = profiles[LATITUDE_DIMENSION]
+    weights = latitude.copy(data=np.cos(np.deg2rad(latitude.to_numpy())))
+    return profiles.weighted(weights).mean(dim=LATITUDE_DIMENSION)
+
+
 def read_insolation(url: str, year: str) -> xr.DataArray:
     """Read ``SWdnTOA`` over one year from a remote OPeNDAP dataset into memory.
 
@@ -329,7 +354,8 @@ def main(argv: list[str] | None = None) -> None:
         type=Path,
         default=DEFAULT_OUTPUT_DIRECTORY,
         help=(
-            f"directory of {PROFILES_FILENAME} and {FORCING_PROFILE_FILENAME} "
+            f"directory of {PROFILES_FILENAME}, {FORCING_PROFILE_FILENAME} and "
+            f"{GLOBAL_MEANS_FILENAME} "
             f"(default: {DEFAULT_OUTPUT_DIRECTORY})"
         ),
     )
@@ -357,22 +383,36 @@ def main(argv: list[str] | None = None) -> None:
 
         zonal[experiment] = load_cached(cache_path(experiment), read)
 
+    profiles = {
+        experiment: annual_mean_reduction_profiles(experiment_zonal).assign(
+            forcing=zonal_forcing(experiment_zonal, ALBEDO).mean(dim=TIME_DIMENSION)
+        )
+        for experiment, experiment_zonal in zonal.items()
+    }
     output_directory.mkdir(parents=True, exist_ok=True)
     profiles_output = output_directory / PROFILES_FILENAME
-    save_reduction_profiles_plot(
-        {experiment: annual_mean_reduction_profiles(zonal[experiment]) for experiment in zonal},
-        profiles_output,
-    )
+    save_reduction_profiles_plot(profiles, profiles_output)
     LOGGER.info("Wrote annual mean reduction profiles plot to %s", profiles_output)
     forcing_output = output_directory / FORCING_PROFILE_FILENAME
     save_forcing_profiles_plot(
-        {
-            experiment: zonal_forcing(zonal[experiment], ALBEDO).mean(dim=TIME_DIMENSION)
-            for experiment in zonal
-        },
+        {experiment: profiles[experiment]["forcing"] for experiment in profiles},
         forcing_output,
     )
     LOGGER.info("Wrote annual mean forcing profiles plot to %s", forcing_output)
+
+    table = (
+        xr.concat([global_means(profiles[experiment]) for experiment in profiles], "experiment")
+        .assign_coords(experiment=list(profiles))
+        .to_dataframe()
+        .rename(columns=GLOBAL_MEAN_COLUMNS)
+    )
+    global_means_output = output_directory / GLOBAL_MEANS_FILENAME
+    table.to_csv(global_means_output)
+    LOGGER.info(
+        "Global means, weighted by cos(latitude), of the annual mean profiles:\n%s",
+        table.to_string(float_format="{:.5g}".format),
+    )
+    LOGGER.info("Wrote global means to %s", global_means_output)
 
 
 if __name__ == "__main__":
