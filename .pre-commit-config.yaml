@@ -23,7 +23,7 @@ repos:
 
   # python formatting and linting (security checks: ruff's `S` rules)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.3
+    rev: v0.17.4
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -74,20 +74,20 @@ repos:
 
   # jupyter notebook cleaning
   - repo: https://github.com/srstevenson/nb-clean
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: nb-clean
 
   # keep uv.lock up to date
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.13.6
+    rev: 0.13.7
     hooks:
       - id: uv-lock
 
   # commit messages must follow Conventional Commits (see README.md)
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages: [ commit-msg ]
